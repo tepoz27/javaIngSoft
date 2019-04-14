@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 /**
  *
@@ -38,6 +39,25 @@ public class General {
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
+        return flag;
+    }
+    
+    public boolean insert (String sqlInsertStatement, String ref){
+        boolean flag = false;
+        
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            Statement stat = con.createStatement();
+            stat.execute(sqlInsertStatement);
+            con.close();
+            JOptionPane.showMessageDialog(null, "La creación de su registro en: " + ref + " ha sido exitosa!");
+            flag = true;
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
         return flag;
     }
     
