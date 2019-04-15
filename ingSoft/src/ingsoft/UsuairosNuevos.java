@@ -139,7 +139,7 @@ public class UsuairosNuevos extends javax.swing.JFrame {
         String ref = "Usuarios";
         String sql = "insert into toyshido_usuarios(Usuario, Contra, Rol)"
                 +"values"
-                +"('"+ txtuser.getText() +"', '"+ pswuser.getSelectedText() +"', '"+ cmbrol.getSelectedItem().toString() +"')";
+                +"('"+ txtuser.getText() +"', '"+ pswuser.getText() +"', '"+ cmbrol.getSelectedItem().toString() +"')";
         flag = gen.insert(sql, ref);
         
         if (flag){
