@@ -67,7 +67,7 @@ public class ProductosAñadir extends javax.swing.JFrame {
             }
         });
 
-        btnback.setText("Página principal");
+        btnback.setText("Menú Productos");
         btnback.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnbackActionPerformed(evt);
@@ -151,7 +151,7 @@ public class ProductosAñadir extends javax.swing.JFrame {
 
     private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
         // TODO add your handling code here:
-        new Home().setVisible(true);
+        new Productos().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnbackActionPerformed
 
