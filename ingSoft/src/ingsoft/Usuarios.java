@@ -41,6 +41,7 @@ public class Usuarios extends javax.swing.JFrame {
                 user = new User(rs.getInt("IDUsuario"), rs.getString("Usuario"), rs.getString("Contra"), rs.getString("Rol"));
                 userList.add(user);
             }
+            con.close();
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
@@ -52,6 +53,7 @@ public class Usuarios extends javax.swing.JFrame {
         ArrayList<User> list = userList();
         DefaultTableModel model = (DefaultTableModel)tbluser.getModel();
         Object[] row = new Object[4];
+        
         for (int i = 0;i < list.size();i++){
             row[0] = list.get(i).getID();
             row[1] = list.get(i).getUser();

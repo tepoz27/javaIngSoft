@@ -5,6 +5,14 @@
  */
 package ingsoft;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author mx06200a
@@ -16,8 +24,45 @@ public class Clientes extends javax.swing.JFrame {
      */
     public Clientes() {
         initComponents();
+        showclients();
     }
-
+    
+    public ArrayList<Client> clientList(){
+        ArrayList<Client> clientList = new ArrayList<>();
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            String sql = "Select * from toyshido_clientes";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            Client client;
+            while (rs.next()){
+                client = new Client(rs.getInt("IDCliente"), rs.getString("Nombre"), rs.getString("Apellido"), rs.getString("Direccion"), rs.getString("Telefono"), rs.getString("Email"));
+                clientList.add(client);
+            }
+            con.close();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return clientList;
+    }
+    
+    public void showclients(){
+        ArrayList<Client> list = clientList();
+        DefaultTableModel model = (DefaultTableModel)tblclientes.getModel();
+        Object[] row = new Object[6];
+        
+        for (int i = 0;i < list.size();i++){
+            row[0] = list.get(i).getID();
+            row[1] = list.get(i).getNombre();
+            row[2] = list.get(i).getApellidos();
+            row[3] = list.get(i).getDir();
+            row[4] = list.get(i).getTel();
+            row[5] = list.get(i).getEmail();
+            model.addRow(row);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,6 +74,8 @@ public class Clientes extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblclientes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,12 +93,24 @@ public class Clientes extends javax.swing.JFrame {
             }
         });
 
+        tblclientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IDCliente", "Nombre(s)", "Apellido(s)", "Dirección", "Teléfono", "Email"
+            }
+        ));
+        jScrollPane1.setViewportView(tblclientes);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(574, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
@@ -60,11 +119,16 @@ public class Clientes extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jButton1)
-                .addGap(31, 31, 31)
-                .addComponent(jButton2)
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jButton1)
+                        .addGap(31, 31, 31)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -120,5 +184,7 @@ public class Clientes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblclientes;
     // End of variables declaration//GEN-END:variables
 }
