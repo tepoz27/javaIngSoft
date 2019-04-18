@@ -5,6 +5,14 @@
  */
 package ingsoft;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author mx06200a
@@ -16,8 +24,45 @@ public class Productos extends javax.swing.JFrame {
      */
     public Productos() {
         initComponents();
+        showProducts();
     }
-
+    
+    public ArrayList<Product> productList(){
+        ArrayList<Product> productList = new ArrayList<>();
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            String sql = "Select * from toyshido_productos";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            Product product;
+            while (rs.next()){
+                product = new Product(rs.getInt("IDProducto"), rs.getInt("Stock"), rs.getString("Nombre"), rs.getString("Categoria"), rs.getString("Loca"), rs.getFloat("Precio"));
+                productList.add(product);
+            }
+            con.close();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return productList;
+    }
+    
+    public void showProducts(){
+        ArrayList<Product> list = productList();
+        DefaultTableModel model = (DefaultTableModel)tblprod.getModel();
+        Object[] row = new Object[6];
+        
+        for (int i = 0; i < list.size(); i++){
+            row[0] = list.get(i).getID();
+            row[1] = list.get(i).getName();
+            row[2] = list.get(i).getPrecio();
+            row[3] = list.get(i).getStock();
+            row[4] = list.get(i).getCate();
+            row[5] = list.get(i).getLoca();
+            model.addRow(row);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,6 +74,8 @@ public class Productos extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblprod = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,12 +93,24 @@ public class Productos extends javax.swing.JFrame {
             }
         });
 
+        tblprod.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IDProducto", "Nombre", "Precio", "Stock", "Categoria", "Locación"
+            }
+        ));
+        jScrollPane1.setViewportView(tblprod);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(555, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -60,11 +119,16 @@ public class Productos extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jButton1)
-                .addGap(50, 50, 50)
-                .addComponent(jButton2)
-                .addContainerGap(202, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jButton1)
+                        .addGap(50, 50, 50)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -120,5 +184,7 @@ public class Productos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblprod;
     // End of variables declaration//GEN-END:variables
 }
