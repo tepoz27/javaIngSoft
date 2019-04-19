@@ -264,6 +264,7 @@ public class Productos extends javax.swing.JFrame {
         // TODO add your handling code here:
         int i = tblprod.getSelectedRow();
         TableModel model = tblprod.getModel();
+        
         txtname.setText(model.getValueAt(i, 1).toString());
         name = model.getValueAt(i, 1).toString();
         txtIDProd.setText(model.getValueAt(i, 0).toString());
@@ -277,6 +278,7 @@ public class Productos extends javax.swing.JFrame {
         categ = cate;
         btnclear.setEnabled(true);
         btnedit.setEnabled(true);
+        
         switch (cate){
             case "Terror":
                     cmbcate.setSelectedIndex(0);
@@ -345,9 +347,19 @@ public class Productos extends javax.swing.JFrame {
             txtprice.setText("");
             txtloca.setText("");
             spnstock.setValue(Integer.parseInt("0"));
+            cmbcate.setSelectedIndex(0);
             
             DefaultTableModel model = (DefaultTableModel)tblprod.getModel();
             model.setRowCount(0);
+            
+            name = "";
+            price = "";
+            loca = "";
+            stock = "";
+            categ = "";
+            
+            btnclear.setEnabled(false);
+            btnedit.setEnabled(false);
             
             showProducts();
         }catch (Exception e){

@@ -7,11 +7,13 @@ package ingsoft;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -26,6 +28,8 @@ public class Usuarios extends javax.swing.JFrame {
         initComponents();
         showUser();
     }
+    
+    String user, contra, rol;
     
     public ArrayList<User> userList(){
         ArrayList<User> userList = new ArrayList<>();
@@ -75,6 +79,16 @@ public class Usuarios extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbluser = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        txtid = new javax.swing.JTextField();
+        txtuser = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtcontra = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        btnclear = new javax.swing.JButton();
+        btnedit = new javax.swing.JButton();
+        cmbrol = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,15 +114,68 @@ public class Usuarios extends javax.swing.JFrame {
                 "ID", "Usuario", "Contraseña", "Rol"
             }
         ));
+        tbluser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbluserMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbluser);
+
+        jLabel1.setText("IDUsuario");
+
+        txtid.setEditable(false);
+
+        jLabel2.setText("Usuario");
+
+        jLabel3.setText("Contraseña");
+
+        jLabel4.setText("Rol");
+
+        btnclear.setText("Cancelar");
+        btnclear.setEnabled(false);
+        btnclear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnclearActionPerformed(evt);
+            }
+        });
+
+        btnedit.setText("Editar");
+        btnedit.setEnabled(false);
+        btnedit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btneditActionPerformed(evt);
+            }
+        });
+
+        cmbrol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Vendedor", "Gerente", "Socio" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnclear))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(cmbrol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtuser, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                                    .addComponent(txtcontra, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnedit))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -125,6 +192,24 @@ public class Usuarios extends javax.swing.JFrame {
                         .addComponent(jButton1)
                         .addGap(71, 71, 71)
                         .addComponent(jButton2)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnclear))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtuser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtcontra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnedit)
+                    .addComponent(jLabel4)
+                    .addComponent(cmbrol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -142,6 +227,95 @@ public class Usuarios extends javax.swing.JFrame {
         new Home().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tbluserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbluserMouseClicked
+        // TODO add your handling code here:
+        int i = tbluser.getSelectedRow();
+        TableModel model = tbluser.getModel();
+        
+        txtid.setText(model.getValueAt(i, 0).toString());
+        txtuser.setText(model.getValueAt(i, 1).toString());
+        user = model.getValueAt(i, 1).toString();
+        txtcontra.setText(model.getValueAt(i, 2).toString());
+        contra = model.getValueAt(i, 2).toString();
+        String role = model.getValueAt(i, 3).toString();
+        switch (role){
+            case "Administrador":
+                cmbrol.setSelectedIndex(0);
+                break;
+            case "Vendedor":
+                cmbrol.setSelectedIndex(1);
+                break;
+            case "Gerente":
+                cmbrol.setSelectedIndex(2);
+                break;
+            case "Socio":
+                cmbrol.setSelectedIndex(3);
+                break;
+        }
+        rol = model.getValueAt(i, 3).toString();
+        
+        btnclear.setEnabled(true);
+        btnedit.setEnabled(true);
+    }//GEN-LAST:event_tbluserMouseClicked
+
+    private void btnclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnclearActionPerformed
+        // TODO add your handling code here:
+        txtuser.setText(user);
+        txtcontra.setText(contra);
+        switch (rol){
+            case "Administrador":
+                cmbrol.setSelectedIndex(0);
+                break;
+            case "Vendedor":
+                cmbrol.setSelectedIndex(1);
+                break;
+            case "Gerente":
+                cmbrol.setSelectedIndex(2);
+                break;
+            case "Socio":
+                cmbrol.setSelectedIndex(3);
+                break;
+        }
+        
+    }//GEN-LAST:event_btnclearActionPerformed
+
+    private void btneditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditActionPerformed
+        // TODO add your handling code here:
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            String sql = "update toyshido_usuarios set Usuario=?, Contra=?, Rol=? where IDUsuario="+ Integer.parseInt(txtid.getText());
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, txtuser.getText());
+            pst.setString(2, txtcontra.getText());
+            pst.setString(3, cmbrol.getSelectedItem().toString());
+            pst.executeUpdate();
+            con.close();
+            
+            JOptionPane.showMessageDialog(null, "Actualización correcta sobre:"+ txtuser.getText() +" !");
+                
+            txtid.setText("");
+            txtuser.setText("");
+            txtcontra.setText("");
+            
+            
+            DefaultTableModel model = (DefaultTableModel)tbluser.getModel();
+            model.setRowCount(0);
+            
+            user = "";
+            contra = "";
+            rol = "";
+            
+            btnclear.setEnabled(false);
+            btnedit.setEnabled(false);
+            
+            showUser();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btneditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,9 +353,19 @@ public class Usuarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnclear;
+    private javax.swing.JButton btnedit;
+    private javax.swing.JComboBox<String> cmbrol;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbluser;
+    private javax.swing.JTextField txtcontra;
+    private javax.swing.JTextField txtid;
+    private javax.swing.JTextField txtuser;
     // End of variables declaration//GEN-END:variables
 }

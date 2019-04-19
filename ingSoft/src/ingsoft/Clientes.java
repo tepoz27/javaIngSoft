@@ -7,11 +7,13 @@ package ingsoft;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -26,6 +28,8 @@ public class Clientes extends javax.swing.JFrame {
         initComponents();
         showclients();
     }
+    
+    String name, ape, dir, fone, mail;
     
     public ArrayList<Client> clientList(){
         ArrayList<Client> clientList = new ArrayList<>();
@@ -76,6 +80,20 @@ public class Clientes extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblclientes = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        txtid = new javax.swing.JTextField();
+        txtname = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtape = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtdir = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtfon = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtemail = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        btneditar = new javax.swing.JButton();
+        btnclear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,20 +119,84 @@ public class Clientes extends javax.swing.JFrame {
                 "IDCliente", "Nombre(s)", "Apellido(s)", "Dirección", "Teléfono", "Email"
             }
         ));
+        tblclientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblclientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblclientes);
+
+        jLabel1.setText("IDCliente");
+
+        txtid.setEditable(false);
+
+        jLabel2.setText("Nombre(s)");
+
+        jLabel3.setText("Apellido(s)");
+
+        jLabel4.setText("Dirección");
+
+        jLabel5.setText("Teléfono");
+
+        jLabel6.setText("Email");
+
+        btneditar.setText("Editar");
+        btneditar.setEnabled(false);
+        btneditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btneditarActionPerformed(evt);
+            }
+        });
+
+        btnclear.setText("Cancelar");
+        btnclear.setEnabled(false);
+        btnclear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnclearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
-                .addGap(54, 54, 54))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton2)
+                            .addComponent(jButton1))
+                        .addGap(54, 54, 54))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnclear)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addGap(54, 54, 54)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtape, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6))
+                                .addGap(69, 69, 69)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtdir, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtfon, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btneditar, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(170, 170, 170))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,6 +210,28 @@ public class Clientes extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtdir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtfon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btneditar)
+                    .addComponent(btnclear))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -145,6 +249,78 @@ public class Clientes extends javax.swing.JFrame {
         new ClientesNuevos().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tblclientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblclientesMouseClicked
+        // TODO add your handling code here:
+        int i = tblclientes.getSelectedRow();
+        TableModel model = tblclientes.getModel();
+        
+        txtid.setText(model.getValueAt(i, 0).toString());
+        txtname.setText(model.getValueAt(i, 1).toString());
+        name = model.getValueAt(i, 1).toString();
+        txtape.setText(model.getValueAt(i, 2).toString());
+        ape = model.getValueAt(i, 2).toString();
+        txtdir.setText(model.getValueAt(i, 3).toString());
+        dir = model.getValueAt(i, 3).toString();
+        txtfon.setText(model.getValueAt(i, 4).toString());
+        fone = model.getValueAt(i, 4).toString();
+        txtemail.setText(model.getValueAt(i, 5).toString());
+        mail = model.getValueAt(i, 5).toString();
+        btnclear.setEnabled(true);
+        btneditar.setEnabled(true);
+    }//GEN-LAST:event_tblclientesMouseClicked
+
+    private void btnclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnclearActionPerformed
+        // TODO add your handling code here:
+        txtname.setText(name);
+        txtape.setText(ape);
+        txtdir.setText(dir);
+        txtfon.setText(fone);
+        txtemail.setText(mail);
+    }//GEN-LAST:event_btnclearActionPerformed
+
+    private void btneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarActionPerformed
+        // TODO add your handling code here:
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            String sql = "update toyshido_clientes set Nombre=?, Apellido=?, Direccion=?, Telefono=?, Email=? where IDCliente="+ Integer.parseInt(txtid.getText());
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, txtname.getText());
+            pst.setString(2, txtape.getText());
+            pst.setString(3, txtdir.getText());
+            pst.setString(4, txtfon.getText());
+            pst.setString(5, txtemail.getText());
+            pst.executeUpdate();
+            con.close();
+            
+            JOptionPane.showMessageDialog(null, "Actualización correcta sobre:"+ txtname.getText() +" !");
+                
+            txtname.setText("");
+            txtid.setText("");
+            txtape.setText("");
+            txtdir.setText("");
+            txtfon.setText("");
+            txtemail.setText("");
+            
+            DefaultTableModel model = (DefaultTableModel)tblclientes.getModel();
+            model.setRowCount(0);
+            
+            name = "";
+            ape = "";
+            dir = "";
+            fone = "";
+            mail = "";
+            
+            btnclear.setEnabled(false);
+            btneditar.setEnabled(false);
+            
+            showclients();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btneditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,9 +358,23 @@ public class Clientes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnclear;
+    private javax.swing.JButton btneditar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblclientes;
+    private javax.swing.JTextField txtape;
+    private javax.swing.JTextField txtdir;
+    private javax.swing.JTextField txtemail;
+    private javax.swing.JTextField txtfon;
+    private javax.swing.JTextField txtid;
+    private javax.swing.JTextField txtname;
     // End of variables declaration//GEN-END:variables
 }
