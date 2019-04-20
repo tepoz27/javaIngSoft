@@ -5,6 +5,14 @@
  */
 package ingsoft;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author mx06200a
@@ -16,8 +24,32 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
+        fillCombo();
+        fillClientes();
     }
-
+    
+    ArrayList<Compra> compraList = new ArrayList<>();
+    public float precioTotal = 0;
+    
+    public void addList(){
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            String sql = "Select distinct * from toyshido_productos where Nombre='"+ btnprod.getSelectedItem().toString() +"'";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            Compra compra;
+            while (rs.next()){
+                compra = new Compra(rs.getString("Nombre"), Integer.parseInt(spncant.getValue().toString()), rs.getInt("IDProducto"), rs.getFloat("Precio"));
+                compraList.add(compra);
+            }
+            con.close();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,6 +64,19 @@ public class Home extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        btnprod = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        spncant = new javax.swing.JSpinner();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblpreview = new javax.swing.JTable();
+        btnadd = new javax.swing.JButton();
+        btncancel = new javax.swing.JButton();
+        btncobrar = new javax.swing.JButton();
+        cmbcliente = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        cmbpago = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,34 +110,124 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Producto");
+
+        jLabel2.setText("Cantidad");
+
+        tblpreview.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IDProducto", "Producto", "Cantidad", "Precio"
+            }
+        ));
+        jScrollPane1.setViewportView(tblpreview);
+
+        btnadd.setText("Añadir");
+        btnadd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnaddActionPerformed(evt);
+            }
+        });
+
+        btncancel.setText("Cancelar");
+        btncancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncancelActionPerformed(evt);
+            }
+        });
+
+        btncobrar.setText("Cobrar");
+        btncobrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncobrarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Cliente");
+
+        cmbpago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Tarjeta" }));
+
+        jLabel4.setText("Método de pago");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(608, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnprod, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(spncant, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(99, 99, 99)
+                        .addComponent(btnadd))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btncancel)
+                                .addGap(35, 35, 35)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmbcliente, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmbpago, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btncobrar))
                 .addGap(41, 41, 41))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jButton1)
-                .addGap(31, 31, 31)
-                .addComponent(jButton2)
-                .addGap(38, 38, 38)
-                .addComponent(jButton3)
-                .addGap(37, 37, 37)
-                .addComponent(jButton4)
-                .addGap(26, 26, 26)
-                .addComponent(jButton5)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jButton1)
+                        .addGap(31, 31, 31)
+                        .addComponent(jButton2)
+                        .addGap(38, 38, 38)
+                        .addComponent(jButton3)
+                        .addGap(37, 37, 37)
+                        .addComponent(jButton4)
+                        .addGap(26, 26, 26)
+                        .addComponent(jButton5))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnprod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(spncant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(btnadd))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btncancel)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btncobrar)
+                        .addComponent(cmbpago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbcliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -122,6 +257,162 @@ public class Home extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
+        // TODO add your handling code here: 
+        addList();
+        DefaultTableModel model = (DefaultTableModel)tblpreview.getModel();
+        model.setRowCount(0);
+        Object[] row = new Object[4];
+        
+        for (int i = 0;i < compraList.size(); i++){
+            row[0] = compraList.get(i).getID();
+            row[1] = compraList.get(i).getNombre();
+            row[2] = compraList.get(i).getCantidad();
+            row[3] = compraList.get(i).getPrecio();
+            model.addRow(row);
+            precioTotal = precioTotal + (compraList.get(i).getPrecio() * compraList.get(i).getCantidad());
+        }
+        
+        row[0] = "";
+        row[1] = "";
+        row[2] = "Precio Total";
+        row[3] = precioTotal;
+        model.addRow(row);
+        
+    }//GEN-LAST:event_btnaddActionPerformed
+
+    private void btncancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel)tblpreview.getModel();
+        model.setRowCount(0);
+        spncant.setValue(Integer.parseInt("0"));
+    }//GEN-LAST:event_btncancelActionPerformed
+
+    private void btncobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncobrarActionPerformed
+        // TODO add your handling code here:
+        General gen = new General();
+        int id = gen.generateCompraID() + 1;
+        int idcompra, cant;
+        boolean flagfact = false;
+        boolean flagcli = false;
+        
+        for (int i = 0; i < compraList.size(); i++){
+            idcompra = compraList.get(i).getID();
+            cant = compraList.get(i).getCantidad();
+            
+            try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            Statement stat = con.createStatement();
+            String sql = "insert into toyshido_compras (IDCompra, IDProducto, Cantidad)"
+                    + "values"
+                    + "("+ id +", "+ idcompra +", "+ cant +")";
+            stat.execute(sql);
+            con.close();
+            }catch (Exception e){
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+        
+        String mycliente = cmbcliente.getSelectedItem().toString();
+        String arrg[] = mycliente.split(" ", 2);
+        
+        try{
+            int idcli = Integer.parseInt(arrg[0]);
+            
+        
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            Statement stat = con.createStatement();
+            String sql = "insert into toyshido_facturas (IDCliente, ModoPago, Fecha)"
+                    + "values"
+                    + "("+ idcli +", '"+ cmbpago.getSelectedItem().toString() +"', GETDATE())";
+            stat.execute(sql);
+            con.close();
+            flagcli = true;
+            }catch (Exception e){
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        try{
+            int idfact = new General().getIDLast();
+            
+            
+            try{
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+                Connection con = DriverManager.getConnection(url);
+                Statement stat = con.createStatement();
+                String sql = "insert into toyshido_detallecompras (IDFactura, IDCompra)"
+                    + "values"
+                    + "("+ idfact +", "+ id +")";
+                stat.execute(sql);
+                con.close();
+                flagfact = true;
+                }catch (Exception e){
+                JOptionPane.showMessageDialog(null, e);
+                }
+            }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        if (flagcli && flagfact){
+            compraList.clear();
+            precioTotal = 0;
+            DefaultTableModel model = (DefaultTableModel)tblpreview.getModel();
+            model.setRowCount(0);
+            spncant.setValue(Integer.parseInt("0"));
+            JOptionPane.showMessageDialog(null, "El cobro ha sido un exito");
+        }else{
+            JOptionPane.showMessageDialog(null, "Estamos experimentando mal servicio con la base de datos, vuelva a intentar pasar el cobro");
+        }
+        
+    }//GEN-LAST:event_btncobrarActionPerformed
+    
+    private void fillCombo(){
+        btnprod.addItem("Sin seleccionar");
+        
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            String sql = "Select * from toyshido_productos where Stock > 0";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()){
+                String name = rs.getString("Nombre");
+                btnprod.addItem(name);
+            }
+            con.close();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    private void fillClientes(){
+        
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            String sql = "Select * from toyshido_clientes";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()){
+                String name = rs.getString("IDCliente") + " " + rs.getString("Nombre") + " " + rs.getString("Apellido") + " / " + rs.getString("Email");
+                cmbcliente.addItem(name);
+            }
+            con.close();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -158,10 +449,23 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnadd;
+    private javax.swing.JButton btncancel;
+    private javax.swing.JButton btncobrar;
+    private javax.swing.JComboBox<String> btnprod;
+    private javax.swing.JComboBox<String> cmbcliente;
+    private javax.swing.JComboBox<String> cmbpago;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner spncant;
+    private javax.swing.JTable tblpreview;
     // End of variables declaration//GEN-END:variables
 }

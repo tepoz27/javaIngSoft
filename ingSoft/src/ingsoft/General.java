@@ -61,5 +61,43 @@ public class General {
         return flag;
     }
     
+    public int generateCompraID(){
+        int n = 0;
+        
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            String sql = "Select TOP 1 *  from toyshido_compras ORDER BY IDCompra DESC";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()){
+                n = rs.getInt(1);
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        return n;
+    }
     
+    public int getIDLast(){
+        int n = 0;
+        
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection con = DriverManager.getConnection(url);
+            String sql = "SELECT TOP 1 * FROM toyshido_facturas ORDER BY IDFactura DESC";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()){
+                n = rs.getInt(1);
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        return n;
+    }
 }
