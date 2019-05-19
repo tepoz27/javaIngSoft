@@ -30,19 +30,20 @@ public class Usuarios extends javax.swing.JFrame {
     }
     
     String user, contra, rol;
+    General gen = new General();
     
     public ArrayList<User> userList(){
         ArrayList<User> userList = new ArrayList<>();
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
-            String sql = "Select * from toyshido_usuarios";
+            String sql = "Select * from toyshido_usuario";
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             User user;
             while (rs.next()){
-                user = new User(rs.getInt("IDUsuario"), rs.getString("Usuario"), rs.getString("Contra"), rs.getString("Rol"));
+                user = new User(rs.getInt("IDUsuario"), rs.getString("Usuario"), rs.getString("Contrasena"), rs.getString("Rol"));
                 userList.add(user);
             }
             con.close();
@@ -284,9 +285,9 @@ public class Usuarios extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
-            String sql = "update toyshido_usuarios set Usuario=?, Contra=?, Rol=? where IDUsuario="+ Integer.parseInt(txtid.getText());
+            String sql = "update toyshido_usuario set Usuario=?, Contrasena=?, Rol=? where IDUsuario="+ Integer.parseInt(txtid.getText());
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, txtuser.getText());
             pst.setString(2, txtcontra.getText());

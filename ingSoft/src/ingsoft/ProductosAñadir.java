@@ -160,7 +160,7 @@ public class ProductosAñadir extends javax.swing.JFrame {
         General gen = new General();
         boolean flag;
         String referencia = "Productos";
-        String sql = "insert into toyshido_productos (Nombre, Precio, Stock, Categoria, Loca, IDProducto)"
+        String sql = "insert into toyshido_producto (Nombre, Precio, Stock, Categoria, Loca, IDProducto)"
                 + "values"
                 + "('"+ txtnombre.getText() +"', '"+ Float.parseFloat(txtprecio.getText()) +"', 0, '"+ cmbcat.getSelectedItem().toString() +"', '"+ txtloca.getText() +"', '"+ txtbarras.getText() +"')";
         

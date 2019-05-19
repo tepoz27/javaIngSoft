@@ -30,12 +30,13 @@ public class Clientes extends javax.swing.JFrame {
     }
     
     String name, ape, dir, fone, mail;
+    General gen = new General();
     
     public ArrayList<Client> clientList(){
         ArrayList<Client> clientList = new ArrayList<>();
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
             String sql = "Select * from toyshido_clientes";
             Statement st = con.createStatement();
@@ -283,7 +284,7 @@ public class Clientes extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
             String sql = "update toyshido_clientes set Nombre=?, Apellido=?, Direccion=?, Telefono=?, Email=? where IDCliente="+ Integer.parseInt(txtid.getText());
             PreparedStatement pst = con.prepareStatement(sql);

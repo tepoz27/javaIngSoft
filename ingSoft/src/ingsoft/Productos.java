@@ -30,14 +30,15 @@ public class Productos extends javax.swing.JFrame {
     }
     
     String name, categ, loca, price, stock;
+    General gen = new General();
     
     public ArrayList<Product> productList(){
         ArrayList<Product> productList = new ArrayList<>();
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
-            String sql = "Select * from toyshido_productos";
+            String sql = "Select * from toyshido_producto";
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             Product product;
@@ -328,9 +329,9 @@ public class Productos extends javax.swing.JFrame {
         
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
-            String sql = "update toyshido_productos set Nombre=?, Precio=?, Stock=?, Categoria=?, Loca=? where IDProducto="+ Integer.parseInt(txtIDProd.getText());
+            String sql = "update toyshido_producto set Nombre=?, Precio=?, Stock=?, Categoria=?, Loca=? where IDProducto="+ Integer.parseInt(txtIDProd.getText());
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, txtname.getText());
             pst.setString(2, txtprice.getText());

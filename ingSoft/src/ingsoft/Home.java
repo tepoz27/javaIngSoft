@@ -28,15 +28,17 @@ public class Home extends javax.swing.JFrame {
         fillClientes();
     }
     
+    General gen = new General();
+    
     ArrayList<Compra> compraList = new ArrayList<>();
     public float precioTotal = 0;
     
     public void addList(){
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
-            String sql = "Select distinct * from toyshido_productos where Nombre='"+ btnprod.getSelectedItem().toString() +"'";
+            String sql = "Select distinct * from toyshido_producto where Nombre='"+ btnprod.getSelectedItem().toString() +"'";
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             Compra compra;
@@ -302,7 +304,7 @@ public class Home extends javax.swing.JFrame {
             
             try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
             Statement stat = con.createStatement();
             String sql = "insert into toyshido_compras (IDCompra, IDProducto, Cantidad)"
@@ -324,7 +326,7 @@ public class Home extends javax.swing.JFrame {
         
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
             Statement stat = con.createStatement();
             String sql = "insert into toyshido_facturas (IDCliente, ModoPago, Fecha)"
@@ -346,7 +348,7 @@ public class Home extends javax.swing.JFrame {
             
             try{
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+                String url = gen.conection;
                 Connection con = DriverManager.getConnection(url);
                 Statement stat = con.createStatement();
                 String sql = "insert into toyshido_detallecompras (IDFactura, IDCompra)"
@@ -379,9 +381,9 @@ public class Home extends javax.swing.JFrame {
         
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
-            String sql = "Select * from toyshido_productos where Stock > 0";
+            String sql = "Select * from toyshido_producto where Stock > 0";
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()){
@@ -398,7 +400,7 @@ public class Home extends javax.swing.JFrame {
         
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = gen.conection;
             Connection con = DriverManager.getConnection(url);
             String sql = "Select * from toyshido_clientes";
             Statement st = con.createStatement();

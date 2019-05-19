@@ -16,13 +16,15 @@ import javax.swing.JOptionPane;
  */
 public class General {
     
+    public String conection = "jdbc:sqlserver://127.0.0.1:1433;database=toyshido;user=sa;password=Borregos28MAT32728#;encrypt=false;trustServerCertificate=false;loginTimeout=30;";
+    
     public boolean acceso(String usuario, String contra){
         boolean flag = false;
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = conection;
             Connection con = DriverManager.getConnection(url);
-            String sql = "Select * from toyshido_usuarios where Usuario=? and Contra=?";
+            String sql = "Select * from toyshido_usuario where Usuario=? and Contrasena=?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, usuario);
             pst.setString(2, contra);
@@ -47,7 +49,7 @@ public class General {
         
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = conection;
             Connection con = DriverManager.getConnection(url);
             Statement stat = con.createStatement();
             stat.execute(sqlInsertStatement);
@@ -66,7 +68,7 @@ public class General {
         
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = conection;
             Connection con = DriverManager.getConnection(url);
             String sql = "Select TOP 1 *  from toyshido_compras ORDER BY IDCompra DESC";
             Statement st = con.createStatement();
@@ -86,7 +88,7 @@ public class General {
         
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://ingsoft.database.windows.net:1433;database=Toyshido;user=aatr27@ingsoft;password=Borregos28);encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            String url = conection;
             Connection con = DriverManager.getConnection(url);
             String sql = "SELECT TOP 1 * FROM toyshido_facturas ORDER BY IDFactura DESC";
             Statement st = con.createStatement();

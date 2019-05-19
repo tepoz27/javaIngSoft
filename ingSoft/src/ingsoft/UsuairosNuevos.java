@@ -137,7 +137,7 @@ public class UsuairosNuevos extends javax.swing.JFrame {
         General gen = new General();
         boolean flag;
         String ref = "Usuarios";
-        String sql = "insert into toyshido_usuarios(Usuario, Contra, Rol)"
+        String sql = "insert into toyshido_usuario(Usuario, Contrasena, Rol)"
                 +"values"
                 +"('"+ txtuser.getText() +"', '"+ pswuser.getText() +"', '"+ cmbrol.getSelectedItem().toString() +"')";
         flag = gen.insert(sql, ref);
