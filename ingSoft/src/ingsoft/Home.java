@@ -104,6 +104,11 @@ public class Home extends javax.swing.JFrame {
         });
 
         jButton4.setText("Reportes");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Usuarios");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -315,6 +320,20 @@ public class Home extends javax.swing.JFrame {
             }catch (Exception e){
                 JOptionPane.showMessageDialog(null, e);
             }
+            
+            try{
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                String url = gen.conection;
+                Connection con = DriverManager.getConnection(url);
+                Statement stat = con.createStatement();
+                String sql = "update toyshido_producto "
+                        + "Set Stock = toyshido_producto.Stock - " + cant +
+                        " Where IDProducto = " + idcompra;
+                stat.execute(sql);
+                con.close();
+            }catch (Exception e){
+                JOptionPane.showMessageDialog(null, e);
+            }
         }
         
         String mycliente = cmbcliente.getSelectedItem().toString();
@@ -370,11 +389,18 @@ public class Home extends javax.swing.JFrame {
             model.setRowCount(0);
             spncant.setValue(Integer.parseInt("0"));
             JOptionPane.showMessageDialog(null, "El cobro ha sido un exito");
+            
         }else{
             JOptionPane.showMessageDialog(null, "Estamos experimentando mal servicio con la base de datos, vuelva a intentar pasar el cobro");
         }
         
     }//GEN-LAST:event_btncobrarActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        new checkUser().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
     
     private void fillCombo(){
         btnprod.addItem("Sin seleccionar");

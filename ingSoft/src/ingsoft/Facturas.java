@@ -123,12 +123,25 @@ public class Facturas extends javax.swing.JFrame {
     
     public void showCompra(){
         ArrayList<Compra> list = compraList();
-        DefaultTableModel model = (DefaultTableModel)tableFact.getModel();
+        DefaultTableModel model = (DefaultTableModel)tblCompra.getModel();
         Object[] row = new Object[4];
+        double total = 0.0;
         
         for(int i = 0; i < list.size(); i++){
+            row[0] = list.get(i).getID();
+            row[1] = list.get(i).getNombre();
+            row[2] = list.get(i).getCantidad();
+            row[3] = list.get(i).getPrecio();
+            model.addRow(row);
             
+            total = total + list.get(i).getPrecio();
         }
+        
+            row[0] = "";
+            row[1] = "";
+            row[2] = "Precio total";
+            row[3] = total;
+            model.addRow(row);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -316,7 +329,7 @@ public class Facturas extends javax.swing.JFrame {
         TableModel model = tableFact.getModel();
         
         idC = model.getValueAt(i, 0).toString();
-        
+        showCompra();
     }//GEN-LAST:event_tableFactMouseClicked
 
     /**
