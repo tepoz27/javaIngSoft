@@ -5,12 +5,15 @@
  */
 package ingsoft;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,6 +28,7 @@ public class reporteMensual extends javax.swing.JFrame {
      */
     public reporteMensual() {
         initComponents();
+        btnLimpiar.setEnabled(false);
     }
     
     General gen = new General();
@@ -149,6 +153,10 @@ public class reporteMensual extends javax.swing.JFrame {
         
         list.clear();
         listAntes.clear();
+        totalHoy = 0.0;
+        totalAyer = 0.0;
+        //DefaultTableModel model = (DefaultTableModel)tblmensual.getModel();
+        //model.setRowCount(0);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -171,6 +179,7 @@ public class reporteMensual extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         lblcMan = new javax.swing.JLabel();
         btnback = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -210,6 +219,13 @@ public class reporteMensual extends javax.swing.JFrame {
             }
         });
 
+        btnLimpiar.setText("Limpiar busqueda");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -225,7 +241,7 @@ public class reporteMensual extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(30, 30, 30)
                         .addComponent(lblcMan)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 276, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
@@ -237,9 +253,11 @@ public class reporteMensual extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addGap(105, 105, 105)
                                 .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
+                                .addGap(106, 106, 106)
                                 .addComponent(btnAnalizar)
-                                .addGap(186, 186, 186)
+                                .addGap(89, 89, 89)
+                                .addComponent(btnLimpiar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnback)))
                         .addContainerGap())))
         );
@@ -253,7 +271,8 @@ public class reporteMensual extends javax.swing.JFrame {
                     .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(btnAnalizar)
-                    .addComponent(btnback))
+                    .addComponent(btnback)
+                    .addComponent(btnLimpiar))
                 .addGap(52, 52, 52)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
@@ -271,6 +290,8 @@ public class reporteMensual extends javax.swing.JFrame {
     private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
         // TODO add your handling code here:
         showReport();
+        btnAnalizar.setEnabled(false);
+        btnLimpiar.setEnabled(true);
     }//GEN-LAST:event_btnAnalizarActionPerformed
 
     private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
@@ -278,6 +299,16 @@ public class reporteMensual extends javax.swing.JFrame {
         new menuReport().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnbackActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel)tblmensual.getModel();
+        model.setRowCount(0);
+        lblcAyer.setText("");
+        lblcMan.setText("");
+        btnAnalizar.setEnabled(true);
+        btnLimpiar.setEnabled(false);
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,9 +344,25 @@ public class reporteMensual extends javax.swing.JFrame {
             }
         });
     }
-
+    
+//    class MyItemListener implements ItemListener {
+//  // This method is called only if a new item has been selected.
+//  public void itemStateChanged(ItemEvent evt) {
+//    JComboBox cb = (JComboBox) evt.getSource();
+//
+//    Object item = evt.getItem();
+//
+//    if (evt.getStateChange() == ItemEvent.SELECTED) {
+//      // Item was just selected
+//    } else if (evt.getStateChange() == ItemEvent.DESELECTED) {
+//      // Item is no longer selected
+//    }
+//  }
+//}
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizar;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnback;
     private javax.swing.JComboBox<String> cmbAno;
     private javax.swing.JComboBox<String> cmbMes;

@@ -24,6 +24,7 @@ public class reporteAnual extends javax.swing.JFrame {
      */
     public reporteAnual() {
         initComponents();
+        btnLimpiar.setEnabled(false);
     }
     
     General gen = new General();
@@ -141,6 +142,8 @@ public class reporteAnual extends javax.swing.JFrame {
         
         list.clear();
         listAntes.clear();
+        totalHoy = 0.0;
+        totalAyer = 0.0;
     }
     
     /**
@@ -162,6 +165,7 @@ public class reporteAnual extends javax.swing.JFrame {
         lblcMan = new javax.swing.JLabel();
         btnAnalizar = new javax.swing.JButton();
         btnback = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -197,6 +201,13 @@ public class reporteAnual extends javax.swing.JFrame {
             }
         });
 
+        btnLimpiar.setText("Limpiar búsqueda");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -220,6 +231,8 @@ public class reporteAnual extends javax.swing.JFrame {
                         .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(414, 414, 414)
                         .addComponent(btnAnalizar)
+                        .addGap(65, 65, 65)
+                        .addComponent(btnLimpiar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnback)))
                 .addContainerGap())
@@ -232,7 +245,8 @@ public class reporteAnual extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAnalizar)
-                    .addComponent(btnback))
+                    .addComponent(btnback)
+                    .addComponent(btnLimpiar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19)
@@ -250,6 +264,8 @@ public class reporteAnual extends javax.swing.JFrame {
     private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
         // TODO add your handling code here:
         showReport();
+        btnAnalizar.setEnabled(false);
+        btnLimpiar.setEnabled(true);
     }//GEN-LAST:event_btnAnalizarActionPerformed
 
     private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
@@ -257,6 +273,16 @@ public class reporteAnual extends javax.swing.JFrame {
         new menuReport().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnbackActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel)tblanual.getModel();
+        model.setRowCount(0);
+        lblcAyer.setText("");
+        lblcMan.setText("");
+        btnAnalizar.setEnabled(true);
+        btnLimpiar.setEnabled(false);
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,6 +321,7 @@ public class reporteAnual extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizar;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnback;
     private javax.swing.JComboBox<String> cmbAno;
     private javax.swing.JLabel jLabel1;
