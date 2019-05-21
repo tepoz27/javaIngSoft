@@ -30,17 +30,37 @@ public class menuReport extends javax.swing.JFrame {
         btndiario = new javax.swing.JButton();
         btnmensual = new javax.swing.JButton();
         btnanual = new javax.swing.JButton();
-        btninvent = new javax.swing.JButton();
+        btnback = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btndiario.setText("Reporte Diario");
+        btndiario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndiarioActionPerformed(evt);
+            }
+        });
 
         btnmensual.setText("Reporte Mensual");
+        btnmensual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnmensualActionPerformed(evt);
+            }
+        });
 
         btnanual.setText("Reporte Anual");
+        btnanual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnanualActionPerformed(evt);
+            }
+        });
 
-        btninvent.setText("Reporte de Inventario");
+        btnback.setText("Regresar a cobros");
+        btnback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -49,13 +69,15 @@ public class menuReport extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btndiario, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnanual))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btninvent)
-                    .addComponent(btnmensual))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnanual)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnback))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btndiario, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addComponent(btnmensual)))
+                .addGap(41, 41, 41))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -64,15 +86,40 @@ public class menuReport extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btndiario)
                     .addComponent(btnmensual))
-                .addGap(47, 47, 47)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnanual)
-                    .addComponent(btninvent))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(btnback))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btndiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndiarioActionPerformed
+        // TODO add your handling code here:
+        new reporteDiario().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btndiarioActionPerformed
+
+    private void btnmensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmensualActionPerformed
+        // TODO add your handling code here:
+        new reporteMensual().setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_btnmensualActionPerformed
+
+    private void btnanualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnanualActionPerformed
+        // TODO add your handling code here:
+        new reporteAnual().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnanualActionPerformed
+
+    private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
+        // TODO add your handling code here:
+        new Home().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnbackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -111,8 +158,8 @@ public class menuReport extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnanual;
+    private javax.swing.JButton btnback;
     private javax.swing.JButton btndiario;
-    private javax.swing.JButton btninvent;
     private javax.swing.JButton btnmensual;
     // End of variables declaration//GEN-END:variables
 }
